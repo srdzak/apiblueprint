@@ -1,0 +1,93 @@
+FORMAT: 1A
+HOST: http://sitedesign
+
+# Site Design API
+
+Site Design API contains the ServiceImage related data for Hybrid Network Site Designs
+
+## Site Design Location Validation [/location/validate{?streetAddress,cityName,stateName}]
+
++ Parameters
+    + streetAddress (required, string) - street address provided
+    + cityName (required, string) - city name provided
+    + stateName (required, string) - state name provided
+
+### Get Validated Location for a Site Design [GET]
+
+This call takes a user provided address and validates it against the Global Location Management system (GLM)
+
++ Response 200 (application/json)
+
+        [
+            {
+                "location": {"locationNumber": "1234567", "Address": {"Street": "12345 W. 23rd Ave","City": "Denver","State": "CO","Zipcode": "80214"}}
+            }
+        ]
+
+## Site Design List [/sites{?customerNumber}]
+
++ Parameters
+    + customerNumber (required, string) - get sites by customer
+
+### Get All Site Designs [GET]
+
+This call gets a collection of Site Designs. It requires that a Customer Number be provided based on the Credentials of the self-service portal user
+
++ Response 200 (application/json)
+
+        [
+            {
+                "siteDesignID": "Unique identifer of the siteDesign",
+                "createdOn": "2015-08-05T08:40:51.620Z",
+                "customer": {"customerNumber": "1-BGHJK", "customerName": "Level3Team"},
+                "location": {"locationNumber": "1234567", "Address": {"Street": "12345 W. 23rd Ave","City": "Denver","State": "CO","Zipcode": "80214"}},
+                "status": "Design"
+            }
+        ]
+        
+## Site Design Create [/sites]
+
+### Create a New Site Design [POST]
+
+This call creates a new Site Design. It takes a JSON
+object containing a customer, location and solution components
+
++ Request (application/json)
+
+        {
+            "customer": {"customerNumber": "1-BGHJK", "customerName": "Level3Team"},
+            "location": {"locationNumber": "1234567", "Address": {"Street": "12345 W. 23rd Ave","City": "Denver","State": "CO","Zipcode": "80214"}},
+            "designComponents": [{"componentID": "12345", "componentName": "Access", "attributes": [{"name": "Provider", "value": "CenturyLink"},{"name": "Speed", "value": "25/5"}]},
+                                {"componentID": "12345", "componentName": "Access", "attributes": [{"name": "Provider", "value": "CenturyLink"},{"name": "Speed", "value": "25/5"}]}]
+        }
+
++ Response 200 (application/json)
+
+        {
+            "siteDesignID": "12345",
+            "createdOn": "2015-08-05T08:40:51.620Z"
+        }
+    
+            
+## Site Design Detail [/sites/{siteDesignID}]
+
++ Parameters
+    + siteDesignID (required, number) - ID of the site design in the form of an number
+    
+### Get a Single Site Design Detail [GET]
+
+This call gets the details of a Site Design
+    
++ Response 200 (application/json)
+
+        [
+            {
+                "siteDesignID": "Unique identifer of the siteDesign",
+                "createdOn": "2015-08-05T08:40:51.620Z",
+                "customer": {"customerNumber": "1-BGHJK", "customerName": "Level3Team"},
+                "location": {"locationNumber": "1234567", "Address": {"Street": "12345 W. 23rd Ave","City": "Denver","State": "CO","Zipcode": "80214"}},
+                "status": "Design",
+                "designComponents": [{"componentID": "12345", "componentName": "Access", "attributes": [{"name": "Provider", "value": "CenturyLink"},{"name": "Speed", "value": "25/5"}]},
+                                     {"componentID": "12345", "componentName": "Access", "attributes": [{"name": "Provider", "value": "CenturyLink"},{"name": "Speed", "value": "25/5"}]}]
+            }
+        ]
